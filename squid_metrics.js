@@ -1,7 +1,4 @@
 /* eslint-disable no-console */
-
-'use strict';
-
 const { createServer }     = require('@promster/server');
 const { createPlugin }     = require('@promster/hapi');
 const { createMiddleware } = require('@promster/express');
@@ -13,49 +10,98 @@ const defaultMetricTypes = [
   'httpContentLengthHistogram'
 ];
 
+/** @type {import('http').Server | null} */
+let metricsServer = null;
+
+/**
+  * Normalizes all the status within their hundred range, once that
+  * the specific status does not matte (i.e: 1XX, 2XX, 3XX, 4XX, 5XX etc)
+  * @param {number} status
+  * @returns {string}
+  */
 function DefaultStatusCodeNormalizer (status)
 {
-  // Normalizes all the status within their hundred range, once that
-  // the specific status does not matter
-  // i.e: 1XX, 2XX, 3XX, 4XX, 5XX, etc
   return Math.trunc(status / 100) + 'XX';
 }
 
+/** @type {PromsterOptions} */
 const defaultOptions = {
-  metricTypes : defaultMetricTypes,
+  metricTypes         : defaultMetricTypes,
   normalizeStatusCode : DefaultStatusCodeNormalizer
-}
+};
 
-function MergeOptions (customizedOptions)
+/**
+ * merges the customized and default options objects
+ * properties defined in the customizedOptions will overwrite the
+ * properties defined in defaultOptions
+ * @param {PromsterOptions} customizedOptions
+ * @returns {PromsterOptions}
+ */
+function MergeOptions (customizedOptions = {})
 {
-  // merges the customized and default options objects
-  // properties defined in the customizedOptions will overwrite the
-  // properties defined in defaultOptions
   return { ...defaultOptions, ...customizedOptions };
 }
 
-function StartServer (port = 9113)
+async function StartServer (port = 9113)
 {
-  createServer({ port : port }).then((server) =>
-    console.log(`Prometheus metrics exporter (@promster/server) started on port ${port}.`)
-  );
+  metricsServer = await createServer({ port : port });
+  console.log(`Prometheus metrics exporter (@promster/server) started on port ${port}.`);
 }
 
-function GetExpressInstrumentationMiddleware(expressServer, customizedOptions)
+/**
+ * @param {ServerInstance} expressServer
+ * @param {PromsterOptions} customizedOptions
+ */
+function GetExpressInstrumentationMiddleware (expressServer, customizedOptions)
 {
   return createMiddleware({
-    expressServer,
+    app     : expressServer,
     options : MergeOptions(customizedOptions)
   });
 }
 
-function GetHappiInstrumentationPlugin(customizedOptions)
+/**
+ * @param {PromsterOptions} [customizedOptions]
+ */
+function GetHappiInstrumentationPlugin (customizedOptions)
 {
   return createPlugin({
     options : MergeOptions(customizedOptions)
   });
 }
 
-exports.StartServer = StartServer;
-exports.GetExpressInstrumentationMiddleware = GetExpressInstrumentationMiddleware;
-exports.GetHappiInstrumentationPlugin = GetHappiInstrumentationPlugin;
+/**
+ * @returns {Promise<void>}
+ */
+async function CloseMetricsServer ()
+{
+  if (!metricsServer)
+  {
+    console.warn('Prometheus metrics exporter (@promster/server) is not running');
+    return;
+  }
+
+  await new Promise((resolve, reject) =>
+  {
+    metricsServer.close((error) =>
+    {
+      if (error)
+      {
+        console.error('Error while closing the metrics server:', error);
+        reject(error);
+        return;
+      }
+      console.log('Prometheus metrics exporter (@promster/server) stopped');
+      resolve();
+    });
+  });
+}
+/** @typedef {NonNullable<(Parameters<typeof createMiddleware>[0])>['app']} ServerInstance */
+/** @typedef {NonNullable<(Parameters<typeof createMiddleware>[0])>['options']} PromsterOptions */
+
+module.exports = {
+  StartServer,
+  GetExpressInstrumentationMiddleware,
+  GetHappiInstrumentationPlugin,
+  CloseMetricsServer
+};
