@@ -1,9 +1,10 @@
 {
   "name": "squid-metrics",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Biblioteca que coleta métricas (no padrão do Prometheus) do NodeJS, Express e Hapi e as exporta em um server HTTP",
   "main": "squid_metrics.js",
   "scripts": {
+    "build": "npx -p typescript tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
