@@ -2,6 +2,7 @@
 const { createServer }     = require('@promster/server');
 const { createPlugin }     = require('@promster/hapi');
 const { createMiddleware } = require('@promster/express');
+const { Prometheus, defaultRegister } = require('@promster/metrics');
 
 const defaultMetricTypes = [
   'httpRequestsTotal',
@@ -96,6 +97,25 @@ async function CloseMetricsServer ()
     });
   });
 }
+
+/**
+ * Returns the Prometheus client (prom-client) for creating custom metrics
+ * @returns {typeof import('prom-client')}
+ */
+function GetPrometheusClient ()
+{
+  return Prometheus;
+}
+
+/**
+ * Returns the default Prometheus registry used by @promster
+ * This is the same registry where HTTP metrics are registered
+ * @returns {import('prom-client').Registry}
+ */
+function GetPrometheusRegistry ()
+{
+  return defaultRegister;
+}
 /** @typedef {NonNullable<(Parameters<typeof createMiddleware>[0])>['app']} ServerInstance */
 /** @typedef {NonNullable<(Parameters<typeof createMiddleware>[0])>['options']} PromsterOptions */
 
@@ -103,5 +123,7 @@ module.exports = {
   StartServer,
   GetExpressInstrumentationMiddleware,
   GetHappiInstrumentationPlugin,
-  CloseMetricsServer
+  CloseMetricsServer,
+  GetPrometheusClient,
+  GetPrometheusRegistry
 };
