@@ -6,10 +6,24 @@
     <p align="center">Submódulo responsável por instanciar um servidor de envio de métricas para o Prometheus.
 </p>
 
-# Geração e atualização de tipos
+# Build
 
-Para atualizar os arquivos de tipagem (`squid_metrics.d.ts` e `squid_metrics.d.ts.map`), utilize o seguinte comando:
+Para gerar os artefatos ESM/CommonJS e os tipos em `dist/`, utilize:
 
 ```sh
 npm run build
+```
+
+# Uso
+
+ESM:
+
+```js
+import { StartServer } from 'squid-metrics'
+```
+
+CommonJS:
+
+```js
+const { StartServer } = require('squid-metrics')
 ```

@@ -2,11 +2,21 @@
   "name": "squid-metrics",
   "version": "1.2.0",
   "description": "Biblioteca que coleta métricas (no padrão do Prometheus) do NodeJS, Express e Hapi e as exporta em um server HTTP",
-  "main": "squid_metrics.js",
-  "types": "squid_metrics.d.ts",
+  "type": "module",
+  "main": "./dist/squid_metrics.cjs",
+  "types": "./dist/squid_metrics.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/squid_metrics.d.ts",
+      "import": "./dist/squid_metrics.js",
+      "require": "./dist/squid_metrics.cjs",
+      "default": "./dist/squid_metrics.js"
+    }
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "lint": "eslint",
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -29,10 +39,12 @@
     "@types/express": "^5.0.6",
     "@types/hapi__hapi": "^21.0.0",
     "@types/node": "^25.5.0",
+    "@typescript-eslint/parser": "^8.46.1",
     "eslint": "^10.0.3",
     "eslint-plugin-perfectionist": "^5.6.0",
     "eslint-plugin-unicorn": "^63.0.0",
     "globals": "^17.4.0",
+    "tsup": "^8.5.0",
     "typescript": "^5.9.3"
   }
 }
