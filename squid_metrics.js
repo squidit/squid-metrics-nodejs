@@ -35,7 +35,7 @@ const defaultOptions = {
  * merges the customized and default options objects
  * properties defined in the customizedOptions will overwrite the
  * properties defined in defaultOptions
- * @param {PromsterOptions} customizedOptions
+ * @param {PromsterOptions} [customizedOptions]
  * @returns {PromsterOptions}
  */
 function MergeOptions (customizedOptions = {})
@@ -43,6 +43,11 @@ function MergeOptions (customizedOptions = {})
   return { ...defaultOptions, ...customizedOptions };
 }
 
+/**
+ * Starts the metrics HTTP exporter server.
+ * @param {number} [port]
+ * @returns {Promise<void>}
+ */
 async function StartServer (port = 9113)
 {
   metricsServer = await createServer({ port : port });
@@ -51,7 +56,8 @@ async function StartServer (port = 9113)
 
 /**
  * @param {ServerInstance} expressServer
- * @param {PromsterOptions} customizedOptions
+ * @param {PromsterOptions} [customizedOptions]
+ * @returns {(request: import('express').Request, response: import('express').Response, next: import('express').NextFunction) => void}
  */
 function GetExpressInstrumentationMiddleware (expressServer, customizedOptions)
 {
@@ -63,6 +69,7 @@ function GetExpressInstrumentationMiddleware (expressServer, customizedOptions)
 
 /**
  * @param {PromsterOptions} [customizedOptions]
+ * @returns {import('@hapi/hapi').Plugin<unknown>}
  */
 function GetHappiInstrumentationPlugin (customizedOptions)
 {
@@ -116,8 +123,8 @@ function GetPrometheusRegistry ()
 {
   return defaultRegister;
 }
-/** @typedef {NonNullable<(Parameters<typeof createMiddleware>[0])>['app']} ServerInstance */
-/** @typedef {NonNullable<(Parameters<typeof createMiddleware>[0])>['options']} PromsterOptions */
+/** @typedef {NonNullable<Parameters<typeof import('@promster/express').createMiddleware>[0]>['app']} ServerInstance */
+/** @typedef {NonNullable<Parameters<typeof import('@promster/express').createMiddleware>[0]>['options']} PromsterOptions */
 
 module.exports = {
   StartServer,
