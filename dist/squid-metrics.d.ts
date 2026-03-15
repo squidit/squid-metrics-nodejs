@@ -11,7 +11,7 @@ type PromsterOptions = NonNullable<Parameters<typeof createMiddleware>[0]>['opti
  */
 declare function StartServer(port?: number): Promise<void>;
 declare function GetExpressInstrumentationMiddleware(expressServer: ServerInstance, customizedOptions?: PromsterOptions): (request: Request, response: Response, next: NextFunction) => void;
-declare function GetHappiInstrumentationPlugin(customizedOptions?: PromsterOptions): _hapi_hapi.Plugin<unknown>;
+declare function GetHapiInstrumentationPlugin(customizedOptions?: PromsterOptions): _hapi_hapi.Plugin<unknown>;
 declare function CloseMetricsServer(): Promise<void>;
 /**
  * Returns the Prometheus client (prom-client) for creating custom metrics
@@ -22,13 +22,5 @@ declare function GetPrometheusClient(): typeof prom_client;
  * This is the same registry where HTTP metrics are registered
  */
 declare function GetPrometheusRegistry(): Registry;
-declare const SquidMetrics: {
-    StartServer: typeof StartServer;
-    GetExpressInstrumentationMiddleware: typeof GetExpressInstrumentationMiddleware;
-    GetHappiInstrumentationPlugin: typeof GetHappiInstrumentationPlugin;
-    CloseMetricsServer: typeof CloseMetricsServer;
-    GetPrometheusClient: typeof GetPrometheusClient;
-    GetPrometheusRegistry: typeof GetPrometheusRegistry;
-};
 
-export { CloseMetricsServer, GetExpressInstrumentationMiddleware, GetHappiInstrumentationPlugin, GetPrometheusClient, GetPrometheusRegistry, type PromsterOptions, type ServerInstance, StartServer, SquidMetrics as default };
+export { CloseMetricsServer, GetExpressInstrumentationMiddleware, GetHapiInstrumentationPlugin, GetPrometheusClient, GetPrometheusRegistry, type PromsterOptions, type ServerInstance, StartServer };

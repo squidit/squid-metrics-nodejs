@@ -19,11 +19,10 @@ var squid_metrics_exports = {};
 __export(squid_metrics_exports, {
   CloseMetricsServer: () => CloseMetricsServer,
   GetExpressInstrumentationMiddleware: () => GetExpressInstrumentationMiddleware,
-  GetHappiInstrumentationPlugin: () => GetHappiInstrumentationPlugin,
+  GetHapiInstrumentationPlugin: () => GetHapiInstrumentationPlugin,
   GetPrometheusClient: () => GetPrometheusClient,
   GetPrometheusRegistry: () => GetPrometheusRegistry,
-  StartServer: () => StartServer,
-  default: () => squid_metrics_default
+  StartServer: () => StartServer
 });
 module.exports = __toCommonJS(squid_metrics_exports);
 var import_express = require("@promster/express");
@@ -57,7 +56,7 @@ function GetExpressInstrumentationMiddleware(expressServer, customizedOptions) {
     options: MergeOptions(customizedOptions)
   });
 }
-function GetHappiInstrumentationPlugin(customizedOptions) {
+function GetHapiInstrumentationPlugin(customizedOptions) {
   return (0, import_hapi.createPlugin)({
     options: MergeOptions(customizedOptions)
   });
@@ -88,19 +87,18 @@ function GetPrometheusRegistry() {
 const SquidMetrics = {
   StartServer,
   GetExpressInstrumentationMiddleware,
-  GetHappiInstrumentationPlugin,
+  GetHapiInstrumentationPlugin,
   CloseMetricsServer,
   GetPrometheusClient,
   GetPrometheusRegistry
 };
-var squid_metrics_default = SquidMetrics;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   CloseMetricsServer,
   GetExpressInstrumentationMiddleware,
-  GetHappiInstrumentationPlugin,
+  GetHapiInstrumentationPlugin,
   GetPrometheusClient,
   GetPrometheusRegistry,
   StartServer
 });
-//# sourceMappingURL=squid_metrics.cjs.map
+//# sourceMappingURL=squid-metrics.cjs.map

@@ -29,7 +29,7 @@ function GetExpressInstrumentationMiddleware(expressServer, customizedOptions) {
     options: MergeOptions(customizedOptions)
   });
 }
-function GetHappiInstrumentationPlugin(customizedOptions) {
+function GetHapiInstrumentationPlugin(customizedOptions) {
   return createPlugin({
     options: MergeOptions(customizedOptions)
   });
@@ -60,19 +60,17 @@ function GetPrometheusRegistry() {
 const SquidMetrics = {
   StartServer,
   GetExpressInstrumentationMiddleware,
-  GetHappiInstrumentationPlugin,
+  GetHapiInstrumentationPlugin,
   CloseMetricsServer,
   GetPrometheusClient,
   GetPrometheusRegistry
 };
-var squid_metrics_default = SquidMetrics;
 export {
   CloseMetricsServer,
   GetExpressInstrumentationMiddleware,
-  GetHappiInstrumentationPlugin,
+  GetHapiInstrumentationPlugin,
   GetPrometheusClient,
   GetPrometheusRegistry,
-  StartServer,
-  squid_metrics_default as default
+  StartServer
 };
-//# sourceMappingURL=squid_metrics.js.map
+//# sourceMappingURL=squid-metrics.js.map

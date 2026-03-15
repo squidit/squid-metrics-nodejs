@@ -58,7 +58,7 @@ function GetExpressInstrumentationMiddleware(
   })
 }
 
-function GetHappiInstrumentationPlugin(customizedOptions?: PromsterOptions): import('@hapi/hapi').Plugin<unknown> {
+function GetHapiInstrumentationPlugin(customizedOptions?: PromsterOptions): import('@hapi/hapi').Plugin<unknown> {
   return createPlugin({
     options: MergeOptions(customizedOptions),
   })
@@ -71,7 +71,7 @@ async function CloseMetricsServer(): Promise<void> {
   }
 
   await new Promise<void>((resolve, reject) => {
-    metricsServer?.close((error) => {
+    metricsServer.close((error) => {
       if (error) {
         console.error('Error while closing the metrics server:', error)
         reject(error)
@@ -102,7 +102,7 @@ function GetPrometheusRegistry(): Registry {
 const SquidMetrics = {
   StartServer,
   GetExpressInstrumentationMiddleware,
-  GetHappiInstrumentationPlugin,
+  GetHapiInstrumentationPlugin,
   CloseMetricsServer,
   GetPrometheusClient,
   GetPrometheusRegistry,
@@ -111,10 +111,8 @@ const SquidMetrics = {
 export {
   StartServer,
   GetExpressInstrumentationMiddleware,
-  GetHappiInstrumentationPlugin,
+  GetHapiInstrumentationPlugin,
   CloseMetricsServer,
   GetPrometheusClient,
   GetPrometheusRegistry,
 }
-
-export default SquidMetrics

@@ -4,7 +4,7 @@ export default defineConfig({
   bundle: false,
   clean: true,
   dts: true,
-  entry: ['squid_metrics.ts'],
+  entry: ['squid-metrics.ts'],
   format: ['esm', 'cjs'],
   outDir: 'dist',
   outExtension({ format }) {
