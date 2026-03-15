@@ -11,16 +11,20 @@
   "keywords": [],
   "author": "Henrique Martini <henrique.martini@squidit.com.br>",
   "license": "ISC",
+  "engines": {
+    "node": ">=20",
+    "npm": ">=8"
+  },
   "dependencies": {
-    "@promster/express": "^7.0.5",
-    "@promster/hapi": "^8.0.5",
-    "@promster/metrics": "^9.1.6",
-    "@promster/server": "^7.0.7",
-    "prom-client": "^14.1.0"
+    "@promster/express": "^15.4.6",
+    "@promster/hapi": "^15.4.6",
+    "@promster/metrics": "^15.4.6",
+    "@promster/server": "^15.4.6",
+    "prom-client": "^15.1.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
-    "@types/hapi__hapi": "^20.0.13",
+    "@types/hapi__hapi": "^21.0.0",
     "@types/node": "^25.5.0",
     "typescript": "^5.9.3"
   }

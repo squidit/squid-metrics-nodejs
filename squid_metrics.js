@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { createServer }     = require('@promster/server');
 const { createPlugin }     = require('@promster/hapi');
 const { createMiddleware } = require('@promster/express');
