@@ -1,6 +1,6 @@
 {
   "name": "squid-metrics",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Biblioteca que coleta métricas (no padrão do Prometheus) do NodeJS, Express e Hapi e as exporta em um server HTTP",
   "type": "module",
   "main": "./dist/squid_metrics.cjs",
