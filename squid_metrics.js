@@ -1,17 +1,17 @@
-const { createServer }     = require('@promster/server');
-const { createPlugin }     = require('@promster/hapi');
-const { createMiddleware } = require('@promster/express');
-const { Prometheus, defaultRegister } = require('@promster/metrics');
+const { createServer } = require('@promster/server')
+const { createPlugin } = require('@promster/hapi')
+const { createMiddleware } = require('@promster/express')
+const { Prometheus, defaultRegister } = require('@promster/metrics')
 
 const defaultMetricTypes = [
   'httpRequestsTotal',
   'httpRequestsHistogram',
   'httpRequestsSummary',
-  'httpContentLengthHistogram'
-];
+  'httpContentLengthHistogram',
+]
 
 /** @type {import('http').Server | null} */
-let metricsServer = null;
+let metricsServer = undefined
 
 /**
   * Normalizes all the status within their hundred range, once that
@@ -19,16 +19,15 @@ let metricsServer = null;
   * @param {number} status
   * @returns {string}
   */
-function DefaultStatusCodeNormalizer (status)
-{
-  return Math.trunc(status / 100) + 'XX';
+function DefaultStatusCodeNormalizer(status) {
+  return Math.trunc(status / 100) + 'XX'
 }
 
 /** @type {PromsterOptions} */
 const defaultOptions = {
-  metricTypes         : defaultMetricTypes,
-  normalizeStatusCode : DefaultStatusCodeNormalizer
-};
+  metricTypes: defaultMetricTypes,
+  normalizeStatusCode: DefaultStatusCodeNormalizer,
+}
 
 /**
  * merges the customized and default options objects
@@ -37,9 +36,8 @@ const defaultOptions = {
  * @param {PromsterOptions} [customizedOptions]
  * @returns {PromsterOptions}
  */
-function MergeOptions (customizedOptions = {})
-{
-  return { ...defaultOptions, ...customizedOptions };
+function MergeOptions(customizedOptions = {}) {
+  return { ...defaultOptions, ...customizedOptions }
 }
 
 /**
@@ -47,10 +45,9 @@ function MergeOptions (customizedOptions = {})
  * @param {number} [port]
  * @returns {Promise<void>}
  */
-async function StartServer (port = 9113)
-{
-  metricsServer = await createServer({ port : port });
-  console.log(`Prometheus metrics exporter (@promster/server) started on port ${port}.`);
+async function StartServer(port = 9113) {
+  metricsServer = await createServer({ port: port })
+  console.log(`Prometheus metrics exporter (@promster/server) started on port ${port}.`)
 }
 
 /**
@@ -58,59 +55,51 @@ async function StartServer (port = 9113)
  * @param {PromsterOptions} [customizedOptions]
  * @returns {(request: import('express').Request, response: import('express').Response, next: import('express').NextFunction) => void}
  */
-function GetExpressInstrumentationMiddleware (expressServer, customizedOptions)
-{
+function GetExpressInstrumentationMiddleware(expressServer, customizedOptions) {
   return createMiddleware({
-    app     : expressServer,
-    options : MergeOptions(customizedOptions)
-  });
+    app: expressServer,
+    options: MergeOptions(customizedOptions),
+  })
 }
 
 /**
  * @param {PromsterOptions} [customizedOptions]
  * @returns {import('@hapi/hapi').Plugin<unknown>}
  */
-function GetHappiInstrumentationPlugin (customizedOptions)
-{
+function GetHappiInstrumentationPlugin(customizedOptions) {
   return createPlugin({
-    options : MergeOptions(customizedOptions)
-  });
+    options: MergeOptions(customizedOptions),
+  })
 }
 
 /**
  * @returns {Promise<void>}
  */
-async function CloseMetricsServer ()
-{
-  if (!metricsServer)
-  {
-    console.warn('Prometheus metrics exporter (@promster/server) is not running');
-    return;
+async function CloseMetricsServer() {
+  if (!metricsServer) {
+    console.warn('Prometheus metrics exporter (@promster/server) is not running')
+    return
   }
 
-  await new Promise((resolve, reject) =>
-  {
-    metricsServer.close((error) =>
-    {
-      if (error)
-      {
-        console.error('Error while closing the metrics server:', error);
-        reject(error);
-        return;
+  await new Promise((resolve, reject) => {
+    metricsServer.close((error) => {
+      if (error) {
+        console.error('Error while closing the metrics server:', error)
+        reject(error)
+        return
       }
-      console.log('Prometheus metrics exporter (@promster/server) stopped');
-      resolve();
-    });
-  });
+      console.log('Prometheus metrics exporter (@promster/server) stopped')
+      resolve()
+    })
+  })
 }
 
 /**
  * Returns the Prometheus client (prom-client) for creating custom metrics
  * @returns {typeof import('prom-client')}
  */
-function GetPrometheusClient ()
-{
-  return Prometheus;
+function GetPrometheusClient() {
+  return Prometheus
 }
 
 /**
@@ -118,9 +107,8 @@ function GetPrometheusClient ()
  * This is the same registry where HTTP metrics are registered
  * @returns {import('prom-client').Registry}
  */
-function GetPrometheusRegistry ()
-{
-  return defaultRegister;
+function GetPrometheusRegistry() {
+  return defaultRegister
 }
 /** @typedef {NonNullable<Parameters<typeof import('@promster/express').createMiddleware>[0]>['app']} ServerInstance */
 /** @typedef {NonNullable<Parameters<typeof import('@promster/express').createMiddleware>[0]>['options']} PromsterOptions */
@@ -131,5 +119,5 @@ module.exports = {
   GetHappiInstrumentationPlugin,
   CloseMetricsServer,
   GetPrometheusClient,
-  GetPrometheusRegistry
-};
+  GetPrometheusRegistry,
+}
