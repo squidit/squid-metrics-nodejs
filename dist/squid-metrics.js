@@ -10,7 +10,7 @@ const defaultMetricTypes = [
 ];
 let metricsServer;
 function DefaultStatusCodeNormalizer(status) {
-  return Math.trunc(status / 100) + "XX";
+  return Math.trunc(status / 100) * 100;
 }
 const defaultOptions = {
   metricTypes: defaultMetricTypes,

@@ -1,11 +1,12 @@
 import * as prom_client from 'prom-client';
 import { Registry } from 'prom-client';
 import * as _hapi_hapi from '@hapi/hapi';
-import { createMiddleware } from '@promster/express';
+import { createMiddleware, TPromsterOptions } from '@promster/express';
 import { Request, Response, NextFunction } from 'express';
 
-type ServerInstance = NonNullable<Parameters<typeof createMiddleware>[0]>['app'];
-type PromsterOptions = NonNullable<Parameters<typeof createMiddleware>[0]>['options'];
+type CreateMiddlewareOptions = NonNullable<Parameters<typeof createMiddleware>[0]>;
+type ServerInstance = CreateMiddlewareOptions['app'];
+type PromsterOptions = TPromsterOptions;
 /**
  * Starts the metrics HTTP exporter server.
  */

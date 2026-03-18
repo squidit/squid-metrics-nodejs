@@ -1,4 +1,4 @@
-import { createMiddleware } from '@promster/express'
+import { createMiddleware, type TPromsterOptions } from '@promster/express'
 import { createPlugin } from '@promster/hapi'
 import { Prometheus, defaultRegister } from '@promster/metrics'
 import { createServer } from '@promster/server'
@@ -6,8 +6,10 @@ import type { Request, Response, NextFunction } from 'express'
 import type { Server } from 'node:http'
 import type { Registry } from 'prom-client'
 
-export type ServerInstance = NonNullable<Parameters<typeof createMiddleware>[0]>['app']
-export type PromsterOptions = NonNullable<Parameters<typeof createMiddleware>[0]>['options']
+type CreateMiddlewareOptions = NonNullable<Parameters<typeof createMiddleware>[0]>
+
+export type ServerInstance = CreateMiddlewareOptions['app']
+export type PromsterOptions = TPromsterOptions
 
 const defaultMetricTypes = [
   'httpRequestsTotal',
@@ -22,8 +24,8 @@ let metricsServer: Server | undefined
  * Normalizes all the status within their hundred range, once that
  * the specific status does not matte (i.e: 1XX, 2XX, 3XX, 4XX, 5XX etc)
  */
-function DefaultStatusCodeNormalizer(status: number): string {
-  return Math.trunc(status / 100) + 'XX'
+function DefaultStatusCodeNormalizer(status: number): number {
+  return Math.trunc(status / 100) * 100
 }
 
 const defaultOptions: PromsterOptions = {

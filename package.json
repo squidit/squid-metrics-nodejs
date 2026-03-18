@@ -35,9 +35,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@hapi/hapi": "^21.4.7",
+    "@promster/types": "^15.4.6",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/express": "^5.0.6",
-    "@types/hapi__hapi": "^21.0.0",
     "@types/node": "^25.5.0",
     "@typescript-eslint/parser": "^8.46.1",
     "eslint": "^10.0.3",
