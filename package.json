@@ -3,14 +3,14 @@
   "version": "2.0.0",
   "description": "Biblioteca que coleta métricas (no padrão do Prometheus) do NodeJS, Express e Hapi e as exporta em um server HTTP",
   "type": "module",
-  "main": "./dist/squid_metrics.cjs",
-  "types": "./dist/squid_metrics.d.ts",
+  "main": "./dist/squid-metrics.cjs",
+  "types": "./dist/squid-metrics.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/squid_metrics.d.ts",
-      "import": "./dist/squid_metrics.js",
-      "require": "./dist/squid_metrics.cjs",
-      "default": "./dist/squid_metrics.js"
+      "types": "./dist/squid-metrics.d.ts",
+      "import": "./dist/squid-metrics.js",
+      "require": "./dist/squid-metrics.cjs",
+      "default": "./dist/squid-metrics.js"
     }
   },
   "scripts": {
